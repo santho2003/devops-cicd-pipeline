@@ -39,7 +39,7 @@ jobs:
       - name: Verify container health
         run: |
           for i in $(seq 1 20); do
-            if curl -fsS http://127.0.0.1:5000/health | grep -q healthy; then
+            if curl --connect-timeout 2 --max-time 3 -fsS http://127.0.0.1:5000/health | grep -q healthy; then
               echo "Container health check passed!"
               exit 0
             fi
