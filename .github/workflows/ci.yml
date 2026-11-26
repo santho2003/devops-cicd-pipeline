@@ -11,8 +11,8 @@ permissions:
   contents: read
 
 jobs:
-  test:
-    name: Run Automated Tests
+  test-and-build:
+    name: Test and Build Docker Image
     runs-on: ubuntu-latest
 
     steps:
@@ -27,5 +27,29 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Run tests
+      - name: Run automated tests
         run: python -m pytest -v
+
+      - name: Build Docker image
+        run: docker build -t devops-flask-app:${{ github.sha }} .
+
+      - name: Start container for smoke test
+        run: docker run -d -p 127.0.0.1:5000:5000 --name ci-smoke-container devops-flask-app:${{ github.sha }}
+
+      - name: Verify container health
+        run: |
+          for i in $(seq 1 20); do
+            if curl -fsS http://127.0.0.1:5000/health | grep -q healthy; then
+              echo "Container health check passed!"
+              exit 0
+            fi
+            sleep 1
+          done
+
+          echo "Container health check failed!"
+          docker logs ci-smoke-container
+          exit 1
+
+      - name: Cleanup test container
+        if: always()
+        run: docker rm -f ci-smoke-container || true
