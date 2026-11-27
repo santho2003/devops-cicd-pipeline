@@ -5,9 +5,9 @@ app = Flask(__name__)
 @app.route("/")
 def home():
     return jsonify({
-        "message": "Hello! CI/CD pipeline application is running.",
+        "message": "Version 2 - Automatically deployed through CI/CD!",
         "status": "success",
-        "version": "1.0"
+        "version": "2.0"
     })
 
 @app.route("/health")
