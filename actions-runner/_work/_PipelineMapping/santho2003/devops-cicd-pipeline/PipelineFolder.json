@@ -1,0 +1,12 @@
+﻿{
+  "repositoryName": "santho2003/devops-cicd-pipeline",
+  "pipelineDirectory": "devops-cicd-pipeline",
+  "workspaceDirectory": "devops-cicd-pipeline\\devops-cicd-pipeline",
+  "repositories": {
+    "santho2003/devops-cicd-pipeline": {
+      "repositoryPath": "devops-cicd-pipeline\\devops-cicd-pipeline",
+      "lastRunOn": "11/28/2026 00:13:43 +05:30"
+    }
+  },
+  "lastRunOn": "11/28/2026 00:13:43 +05:30"
+}

@@ -108,8 +108,9 @@ jobs:
       - name: Deploy application
         run: docker compose up -d
 
+      
       - name: Verify deployment health
-        shell: pwsh
+        shell: powershell
         run: |
           $healthy = $false
 
