@@ -78,3 +78,61 @@ jobs:
       - name: Cleanup test container
         if: always()
         run: docker rm -f ci-smoke-container || true
+
+  deploy:
+    name: Deploy to Windows Machine
+    needs: test-and-build
+
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    runs-on: [self-hosted, Windows, X64]
+
+    permissions:
+      contents: read
+      packages: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Pull latest Docker image
+        run: docker compose pull
+
+      - name: Deploy application
+        run: docker compose up -d
+
+      - name: Verify deployment health
+        shell: pwsh
+        run: |
+          $healthy = $false
+
+          for ($i = 1; $i -le 20; $i++) {
+              try {
+                  $response = Invoke-RestMethod `
+                      -Uri "http://localhost:5000/health" `
+                      -TimeoutSec 3
+
+                  if ($response.status -eq "healthy") {
+                      Write-Host "Deployment health check passed!"
+                      $healthy = $true
+                      break
+                  }
+              }
+              catch {
+                  Write-Host "Waiting for application... Attempt $i"
+              }
+
+              Start-Sleep -Seconds 2
+          }
+
+          if (-not $healthy) {
+              docker compose logs
+              throw "Deployment health check failed!"
+          }

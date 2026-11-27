@@ -1,0 +1,11 @@
+﻿{
+  "agentId": 21,
+  "agentName": "SANTHOSH",
+  "poolId": 1,
+  "poolName": "Default",
+  "serverUrl": "https://pipelinesghubeus13.actions.githubusercontent.com/gvuziJ6pDEttwqzRE4lmFyTq6ndycep0WKUNfDi7xO9ep0TOTl/",
+  "gitHubUrl": "https://github.com/santho2003/devops-cicd-pipeline",
+  "workFolder": "_work",
+  "useV2Flow": true,
+  "serverUrlV2": "https://broker.actions.githubusercontent.com/"
+}
