@@ -1,7 +1,7 @@
 
 services:
   flask-app:
-    image: ghcr.io/santho2003/devops-cicd-pipeline:latest
+    image: ghcr.io/santho2003/devops-cicd-pipeline:${IMAGE_TAG:-latest}
 
     container_name: devops-flask-app
 

@@ -17,6 +17,9 @@ jobs:
     name: Test and Build Docker Image
     runs-on: ubuntu-latest
 
+    env:
+      IMAGE_TAG: ${{ github.sha }}
+
     steps:
       - name: Checkout source code
         uses: actions/checkout@v4
